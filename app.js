@@ -12,30 +12,38 @@ const moduleArea = document.getElementById('module-area')
 function uid() { return Math.random().toString(36).slice(2,9) }
 
 // API helpers
+async function apiRequest(url, options = {}) {
+  const resp = await fetch(url, options)
+  const text = await resp.text()
+  let data
+  try {
+    data = text ? JSON.parse(text) : null
+  } catch (err) {
+    data = text
+  }
+
+  if (!resp.ok) {
+    const msg = data && typeof data === 'object' ? data.error || data.message : data
+    throw new Error(msg || `HTTP ${resp.status}`)
+  }
+
+  return data
+}
+
 async function apiGetModules() {
-  const resp = await fetch('/api/modules')
-  if (!resp.ok) throw new Error('Falha ao buscar módulos')
-  return resp.json()
+  return apiRequest('/api/modules')
 }
 async function apiAddModule(title) {
-  const resp = await fetch('/api/modules', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title }) })
-  if (!resp.ok) throw new Error('Falha ao criar módulo')
-  return resp.json()
+  return apiRequest('/api/modules', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title }) })
 }
 async function apiRemoveModule(id) {
-  const resp = await fetch(`/api/modules/${id}`, { method: 'DELETE' })
-  if (!resp.ok) throw new Error('Falha ao remover módulo')
-  return resp.json()
+  return apiRequest(`/api/modules/${id}`, { method: 'DELETE' })
 }
 async function apiAddVideo(moduleId, title, url) {
-  const resp = await fetch(`/api/modules/${moduleId}/videos`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, url }) })
-  if (!resp.ok) throw new Error('Falha ao adicionar vídeo')
-  return resp.json()
+  return apiRequest(`/api/modules/${moduleId}/videos`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, url }) })
 }
 async function apiRemoveVideo(moduleId, videoId) {
-  const resp = await fetch(`/api/modules/${moduleId}/videos/${videoId}`, { method: 'DELETE' })
-  if (!resp.ok) throw new Error('Falha ao remover vídeo')
-  return resp.json()
+  return apiRequest(`/api/modules/${moduleId}/videos/${videoId}`, { method: 'DELETE' })
 }
 
 // Render
@@ -169,10 +177,11 @@ function youTubeId(url) {
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[c]) }
 
 // Boot
-load()
-if (modules.length) currentModuleId = modules[0].id
-renderModulesList()
-renderModuleArea()
+async function load() {
+  await loadAndRender()
+}
+
+load().catch(err => console.error('Falha ao iniciar:', err))
 
 // UI events
 addModuleBtn.addEventListener('click', () => {

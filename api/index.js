@@ -116,12 +116,11 @@ app.put('/api/modules/:id/videos/:vid', async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }) }
 })
 
-// Serve static files (frontend)
-app.use(express.static(path.join(__dirname, '../')))
+// Nota: API não deve servir SPA aqui, isso é tratado pelo Vercel Static
+// O app deve retornar apenas JSON para /api/*
 
-// 404 fallback para SPA
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'))
+app.use((req, res) => {
+  res.status(404).json({ error: 'API route not found' })
 })
 
 module.exports = app
