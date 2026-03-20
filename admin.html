@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Centro de Treinamento BeachFlow</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: url('background.jpg') center/cover fixed no-repeat;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 26px;
+    }
+
+    header h1 {
+      font-size: 26px;
+      color: #f8fafc;
+    }
+
+    header p {
+      color: #cbd5e1;
+      font-size: 15px;
+    }
+
+    header a {
+      display: inline-block;
+      color: #cbd5e1;
+      text-decoration: none;
+      border: 1px solid rgba(203, 213, 225, 0.4);
+      padding: 8px 12px;
+      border-radius: 10px;
+      transition: 0.2s;
+      font-size: 14px;
+    }
+
+    header a:hover {
+      border-color: #60a5fa;
+      color: #60a5fa;
+    }
+
+    .card {
+      background: #111827;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .card h2 {
+      margin-bottom: 12px;
+      font-size: 20px;
+      color: #f8fafc;
+    }
+
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .form-row input {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.04);
+      color: #f8fafc;
+    }
+
+    .form-row button {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: none;
+      background: #1d4ed8;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .form-row button:hover {
+      background: #2563eb;
+    }
+
+    .list {
+      margin-top: 10px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .module-card {
+      background: #1f2937;
+      border-radius: 14px;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .module-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .module-header h3 {
+      font-size: 18px;
+      color: #f8fafc;
+    }
+
+    .module-header .module-actions button {
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.05);
+      color: #cbd5e1;
+      border-radius: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 14px;
+    }
+
+    .module-header .module-actions button:hover {
+      background: rgba(59,130,246,0.18);
+      border-color: rgba(59,130,246,0.4);
+    }
+
+    .video-list {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .video-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .video-row span {
+      flex: 1;
+      min-width: 140px;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    .video-row .video-actions button {
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.05);
+      color: #cbd5e1;
+      border-radius: 10px;
+      padding: 8px 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 13px;
+    }
+
+    .video-row .video-actions button:hover {
+      background: rgba(59,130,246,0.18);
+      border-color: rgba(59,130,246,0.4);
+    }
+
+    .message {
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(34,197,94,0.15);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: #d1fae5;
+      margin-bottom: 16px;
+    }
+
+    .message.error {
+      background: rgba(248,113,113,0.14);
+      border-color: rgba(248,113,113,0.4);
+      color: #fee2e2;
+    }
+
+    @media (max-width: 760px) {
+      .form-row {
+        flex-direction: column;
+      }
+
+      .module-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .module-header .module-actions {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+      }
+
+      .video-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .video-row .video-actions {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Admin - Centro de Treinamento BeachFlow</h1>
+        <p>Gerencie módulos e vídeos da plataforma BeachFlow.</p>
+      </div>
+      <div>
+        <button id="logoutBtn" style="border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #cbd5e1; border-radius: 10px; padding: 8px 12px; cursor: pointer; transition: 0.2s; font-size: 14px; margin-right: 10px;">Logout</button>
+        <a href="index.html">Voltar à área do aluno</a>
+      </div>
+    </header>
+
+    <div id="message" class="message" style="display: none;"></div>
+
+    <section class="card">
+      <h2>Adicionar novo módulo</h2>
+      <form id="addModuleForm" class="form-row">
+        <input id="newModuleTitle" placeholder="Título do módulo" required />
+        <button type="submit">Criar módulo</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Módulos existentes</h2>
+      <div id="modulesList" class="list"></div>
+    </section>
+  </div>
+
+  <script>
+    // Verificar login
+    if (!localStorage.getItem('loggedIn')) {
+      window.location.href = 'login.html';
+    }
+
+    const api = {
+      loadModules: () => fetch('/api/modules').then(r => r.json()),
+      createModule: (title) => fetch('/api/modules', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title }) }).then(r => r.json()),
+      updateModule: (id, title) => fetch(`/api/modules/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title }) }),
+      deleteModule: (id) => fetch(`/api/modules/${id}`, { method: 'DELETE' }),
+      createVideo: (moduleId, title, url) => fetch(`/api/modules/${moduleId}/videos`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, url }) }).then(r => r.json()),
+      updateVideo: (moduleId, videoId, title, url) => fetch(`/api/modules/${moduleId}/videos/${videoId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title, url }) }),
+      deleteVideo: (moduleId, videoId) => fetch(`/api/modules/${moduleId}/videos/${videoId}`, { method: 'DELETE' }),
+    }
+
+    const messageEl = document.getElementById('message')
+
+    function showMessage(text, { type = 'success', duration = 3500 } = {}) {
+      messageEl.textContent = text
+      messageEl.className = `message ${type === 'error' ? 'error' : ''}`
+      messageEl.style.display = 'block'
+      if (duration) {
+        setTimeout(() => { messageEl.style.display = 'none' }, duration)
+      }
+    }
+
+    function handleError(err) {
+      console.error(err)
+      showMessage(err?.message || 'Ocorreu um erro', { type: 'error' })
+    }
+
+    function createVideoRow(moduleId, video) {
+      const row = document.createElement('div')
+      row.className = 'video-row'
+
+      const title = document.createElement('span')
+      title.innerText = video.title
+      row.appendChild(title)
+
+      const url = document.createElement('span')
+      url.innerText = video.url
+      row.appendChild(url)
+
+      const actions = document.createElement('div')
+      actions.className = 'video-actions'
+
+      const editBtn = document.createElement('button')
+      editBtn.innerText = 'Editar'
+      editBtn.addEventListener('click', async () => {
+        const newTitle = prompt('Título do vídeo:', video.title)
+        if (!newTitle) return
+        const newUrl = prompt('URL do vídeo:', video.url)
+        if (!newUrl) return
+        try {
+          await api.updateVideo(moduleId, video.id, newTitle, newUrl)
+          showMessage('Vídeo atualizado com sucesso')
+          loadModules()
+        } catch (err) {
+          handleError(err)
+        }
+      })
+
+      const deleteBtn = document.createElement('button')
+      deleteBtn.innerText = 'Excluir'
+      deleteBtn.addEventListener('click', async () => {
+        if (!confirm('Tem certeza que deseja excluir este vídeo?')) return
+        try {
+          await api.deleteVideo(moduleId, video.id)
+          showMessage('Vídeo excluído com sucesso')
+          loadModules()
+        } catch (err) {
+          handleError(err)
+        }
+      })
+
+      actions.appendChild(editBtn)
+      actions.appendChild(deleteBtn)
+      row.appendChild(actions)
+
+      return row
+    }
+
+    function createModuleCard(module) {
+      const card = document.createElement('div')
+      card.className = 'module-card'
+
+      const header = document.createElement('div')
+      header.className = 'module-header'
+
+      const title = document.createElement('h3')
+      title.innerText = module.title
+
+      const actions = document.createElement('div')
+      actions.className = 'module-actions'
+
+      const editBtn = document.createElement('button')
+      editBtn.innerText = 'Editar título'
+      editBtn.addEventListener('click', async () => {
+        const newTitle = prompt('Título do módulo:', module.title)
+        if (!newTitle) return
+        try {
+          await api.updateModule(module.id, newTitle)
+          showMessage('Módulo atualizado com sucesso')
+          loadModules()
+        } catch (err) {
+          handleError(err)
+        }
+      })
+
+      const deleteBtn = document.createElement('button')
+      deleteBtn.innerText = 'Excluir módulo'
+      deleteBtn.addEventListener('click', async () => {
+        if (!confirm('Tem certeza que deseja excluir este módulo e todas as aulas?')) return
+        try {
+          await api.deleteModule(module.id)
+          showMessage('Módulo excluído com sucesso')
+          loadModules()
+        } catch (err) {
+          handleError(err)
+        }
+      })
+
+      actions.appendChild(editBtn)
+      actions.appendChild(deleteBtn)
+
+      header.appendChild(title)
+      header.appendChild(actions)
+      card.appendChild(header)
+
+      const videoList = document.createElement('div')
+      videoList.className = 'video-list'
+
+      if (module.videos && module.videos.length) {
+        module.videos.forEach(video => {
+          videoList.appendChild(createVideoRow(module.id, video))
+        })
+      } else {
+        const empty = document.createElement('div')
+        empty.className = 'video-row'
+        empty.innerHTML = '<span style="opacity: 0.7;">Nenhum vídeo cadastrado.</span>'
+        videoList.appendChild(empty)
+      }
+
+      card.appendChild(videoList)
+
+      const addForm = document.createElement('form')
+      addForm.className = 'form-row'
+      addForm.addEventListener('submit', async (event) => {
+        event.preventDefault()
+        const titleInput = addForm.querySelector('input[name="videoTitle"]')
+        const urlInput = addForm.querySelector('input[name="videoUrl"]')
+        const titleValue = titleInput.value.trim()
+        const urlValue = urlInput.value.trim()
+        if (!titleValue || !urlValue) {
+          showMessage('Preencha título e URL do vídeo.', { type: 'error' })
+          return
+        }
+        try {
+          await api.createVideo(module.id, titleValue, urlValue)
+          showMessage('Vídeo adicionado com sucesso')
+          titleInput.value = ''
+          urlInput.value = ''
+          loadModules()
+        } catch (err) {
+          handleError(err)
+        }
+      })
+
+      addForm.innerHTML = `
+        <input name="videoTitle" placeholder="Título da aula" required />
+        <input name="videoUrl" placeholder="URL do vídeo (YouTube ou direto)" required />
+        <button type="submit">Adicionar aula</button>
+      `
+
+      card.appendChild(addForm)
+      return card
+    }
+
+    async function loadModules() {
+      try {
+        const modules = await api.loadModules()
+        const list = document.getElementById('modulesList')
+        list.innerHTML = ''
+        if (!modules || !modules.length) {
+          list.innerHTML = '<p style="color:#cbd5e1">Nenhum módulo cadastrado ainda.</p>'
+          return
+        }
+        modules.forEach(m => list.appendChild(createModuleCard(m)))
+      } catch (err) {
+        handleError(err)
+      }
+    }
+
+    document.getElementById('addModuleForm').addEventListener('submit', async (event) => {
+      event.preventDefault()
+      const titleInput = document.getElementById('newModuleTitle')
+      const title = titleInput.value.trim()
+      if (!title) {
+        showMessage('Digite o título do módulo.', { type: 'error' })
+        return
+      }
+      try {
+        await api.createModule(title)
+        showMessage('Módulo criado com sucesso')
+        titleInput.value = ''
+        loadModules()
+      } catch (err) {
+        handleError(err)
+      }
+    })
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('loggedIn');
+      window.location.href = 'login.html';
+    });
+
+    loadModules()
+  </script>
+</body>
+</html>

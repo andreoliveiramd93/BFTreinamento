@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Centro de Treinamento - BeachFlow</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6290F0;
+      --primary-dark: #4A7BC7;
+      --secondary: #FDD977;
+      --accent: #FDD977;
+      --bg-dark: #F8F9FA;
+      --bg-card: #FFFFFF;
+      --bg-sidebar: #FFFFFF;
+      --text-light: #2D3748;
+      --text-muted: #718096;
+      --border: rgba(0,0,0,0.08);
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+      --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: url('background.jpg') center/cover fixed no-repeat;
+      background-color: #FDD977;
+      color: var(--text-light);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Área principal */
+    .main-content {
+      flex: 1;
+      padding: 40px 30px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      margin: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .top-bar {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .top-bar h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+
+    .top-bar p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto 20px;
+    }
+
+    .admin-link {
+      display: inline-block;
+      padding: 12px 24px;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .admin-link:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      background: var(--primary-dark);
+    }
+
+    .refresh-btn {
+      margin-left: 12px;
+      padding: 12px 22px;
+      border-radius: 50px;
+      border: 2px solid var(--primary);
+      background: var(--secondary);
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+    }
+
+    .refresh-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+    .video-section {
+      margin-bottom: 30px;
+    }
+
+    .video-box {
+      background: #FFFFFF;
+      border-radius: 20px;
+      overflow: hidden;
+      width: 100%;
+      max-width: 1000px;
+      aspect-ratio: 16 / 9;
+      box-shadow: var(--shadow);
+      border: 2px solid rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .video-box:hover {
+      box-shadow: var(--shadow-hover);
+      border-color: var(--primary);
+    }
+
+    .video-box iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .lesson-info {
+      background: var(--bg-card);
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 1000px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .lesson-info h2 {
+      margin-bottom: 15px;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .lesson-info p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* Sidebar direita */
+    .sidebar {
+      width: 400px;
+      background: rgba(255, 255, 255, 0.95);
+      border-left: 1px solid var(--border);
+      padding: 30px;
+      overflow-y: auto;
+      border-radius: 20px 0 0 20px;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar h2 {
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      color: var(--text-light);
+      font-weight: 600;
+      text-align: center;
+      padding-bottom: 15px;
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .module {
+      margin-bottom: 20px;
+      background: var(--secondary);
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .module:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .module-btn {
+      width: 100%;
+      background: transparent;
+      color: var(--text-light);
+      border: none;
+      text-align: left;
+      padding: 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .module-btn::after {
+      content: '▼';
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%) rotate(0deg);
+      transition: transform 0.3s ease;
+      font-size: 0.8rem;
+      color: var(--primary);
+    }
+
+    .module.active .module-btn::after {
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .module-btn:hover {
+      background: rgba(98, 144, 240, 0.1);
+    }
+
+    .lessons {
+      display: none;
+      padding: 15px 20px 20px;
+      background: rgba(0,0,0,0.2);
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .lessons button {
+      width: 100%;
+      margin-top: 10px;
+      background: var(--primary);
+      color: white;
+      border: 1px solid var(--border);
+      padding: 15px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .lessons button:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary);
+      color: white;
+      transform: translateX(5px);
+    }
+
+    .module.active .lessons {
+      display: block;
+    }
+
+    .module.active .module-btn {
+      background: var(--primary);
+      color: white;
+    }
+
+    .no-modules {
+      text-align: center;
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 40px 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        border-radius: 0 0 20px 20px;
+        margin-top: 30px;
+        background: rgba(255, 255, 255, 0.95);
+      }
+
+      .main-content {
+        padding: 30px 20px;
+        margin: 20px;
+      }
+
+      .top-bar h1 {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .top-bar h1 {
+        font-size: 1.8rem;
+      }
+
+      .lesson-info h2 {
+        font-size: 1.5rem;
+      }
+
+      .sidebar h2 {
+        font-size: 1.3rem;
+      }
+
+      .video-box {
+        border-radius: 15px;
+      }
+
+      .lesson-info {
+        padding: 20px;
+        border-radius: 15px;
+      }
+    }
+
+    /* Scrollbar customizada */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.05);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-dark);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Conteúdo principal -->
+    <main class="main-content">
+      <div class="top-bar">
+        <h1>Centro de Treinamento - BeachFlow</h1>
+        <p>Plataforma de treinamento BeachFlow para capacitação profissional.</p>
+        <a class="admin-link" href="login.html">Ir para a área de administração</a>
+        <button id="refreshModules" class="refresh-btn" type="button">Atualizar módulos</button>
+      </div>
+
+      <div class="video-section">
+        <div class="video-box">
+          <iframe
+            id="videoPlayer"
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+      <div class="lesson-info">
+        <h2 id="lessonTitle">Aula de Boas-Vindas</h2>
+        <p id="lessonDescription">
+          Nesta aula, o aluno conhece a plataforma, a organização dos módulos e como assistir aos conteúdos.
+        </p>
+      </div>
+    </main>
+
+    <!-- Menu lateral direito -->
+    <aside class="sidebar">
+      <h2>Módulos do Curso</h2>
+
+      <div id="modulesContainer"></div>
+    </aside>
+  </div>
+
+  <script>
+    // Helper: extract YouTube id and return embed URL or return passed url for non-YouTube
+    function youTubeId(url) {
+      const m = url.match(/(?:v=|youtu\.be\/|embed\/|shorts\/)([A-Za-z0-9_-]{6,})/)
+      return m ? m[1] : null
+    }
+    function embedUrlFrom(url) {
+      if (!url) return ''
+      if (/youtube.com|youtu.be/.test(url)) {
+        const id = youTubeId(url)
+        return id ? `https://www.youtube.com/embed/${id}` : url
+      }
+      // assume direct video file
+      return url
+    }
+
+    function changeLesson(videoUrl, title, description) {
+      document.getElementById('videoPlayer').src = videoUrl
+      document.getElementById('lessonTitle').innerText = title || ''
+      document.getElementById('lessonDescription').innerText = description || ''
+    }
+
+    // Toggle module open/close
+    function toggleModule(element) {
+      element.classList.toggle('active')
+    }
+
+    // Build modules from API
+    async function loadModules() {
+      try {
+        const res = await fetch('/api/modules')
+        if (!res.ok) throw new Error('Falha ao carregar módulos')
+        const modules = await res.json()
+        const container = document.getElementById('modulesContainer')
+        container.innerHTML = ''
+        if (!modules.length) {
+          container.innerHTML = '<div class="no-modules"><p>Nenhum módulo disponível no momento.</p><p>Entre em contato com o administrador.</p></div>'
+          return
+        }
+
+        modules.forEach((m, mi) => {
+          const mod = document.createElement('div')
+          mod.className = 'module' + (mi === 0 ? ' active' : '')
+
+          const btn = document.createElement('button')
+          btn.className = 'module-btn'
+          btn.innerText = m.title || 'Módulo'
+          btn.addEventListener('click', () => toggleModule(mod))
+
+          const lessons = document.createElement('div')
+          lessons.className = 'lessons'
+
+          if (m.videos && m.videos.length) {
+            m.videos.forEach((v, vi) => {
+              const lessonBtn = document.createElement('button')
+              const embed = embedUrlFrom(v.url)
+              lessonBtn.innerText = v.title || `Aula ${vi+1}`
+              lessonBtn.addEventListener('click', () => changeLesson(embed, v.title || '', v.title || ''))
+              lessons.appendChild(lessonBtn)
+            })
+          } else {
+            const p = document.createElement('p')
+            p.style.color = 'var(--text-muted)'
+            p.style.padding = '10px'
+            p.style.fontStyle = 'italic'
+            p.innerText = 'Nenhuma aula disponível neste módulo.'
+            lessons.appendChild(p)
+          }
+
+          mod.appendChild(btn)
+          mod.appendChild(lessons)
+          container.appendChild(mod)
+        })
+
+        // Auto-select first video if exists
+        const firstModule = modules[0]
+        if (firstModule && firstModule.videos && firstModule.videos[0]) {
+          const v0 = firstModule.videos[0]
+          changeLesson(embedUrlFrom(v0.url), v0.title || 'Aula 1', v0.title || '')
+        }
+      } catch (err) {
+        console.error(err)
+        document.getElementById('modulesContainer').innerHTML = '<div class="no-modules"><p>Erro ao carregar módulos.</p><p>Tente recarregar a página.</p></div>'
+      }
+    }
+
+    // Init
+    document.getElementById('refreshModules').addEventListener('click', () => {
+      loadModules()
+    })
+
+    loadModules()
+  </script>
+
+</body>
+</html>
