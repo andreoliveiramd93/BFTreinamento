@@ -110,7 +110,19 @@ async function start() {
   app.use(express.static(path.join(__dirname)))
 
   const port = process.env.PORT || 3000
-  app.listen(port, () => console.log(`Server listening on http://localhost:${port}`))
+  
+  // Para desenvolvimento local
+  if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => console.log(`Server listening on http://localhost:${port}`))
+  }
+
+  return app
 }
 
-start().catch(err => { console.error(err); process.exit(1) })
+// Para desenvolvimento local
+if (process.env.NODE_ENV !== 'production') {
+  start().catch(err => { console.error(err); process.exit(1) })
+} else {
+  // Para Vercel (export do handler)
+  module.exports = start()
+}
